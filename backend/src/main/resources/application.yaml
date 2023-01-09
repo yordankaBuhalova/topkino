@@ -1,0 +1,27 @@
+logging:
+  level:
+    root: INFO
+
+spring:
+  application:
+    name: topkino
+  datasource:
+    url: "jdbc:h2:./topkinodb;INIT=RUNSCRIPT FROM 'classpath:sql/createSchema.sql'"
+    username: "sa"
+    password: ""
+    driver-class-name: "org.h2.Driver"
+#    data: sql/insertData.sql
+  h2:
+    console:
+      enabled: true
+  allowed:
+    resources: /h2-console/**
+  upload:
+    path: /tmp/uploads/
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 15MB
+server:
+  port: 8080

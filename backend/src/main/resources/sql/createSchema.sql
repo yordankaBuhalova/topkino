@@ -1,0 +1,11 @@
+CREATE TYPE IF NOT EXISTS ROOM_TYPE AS ENUM('3D', '2D');
+
+CREATE TABLE IF NOT EXISTS room
+(
+  id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name       VARCHAR(255) NOT NULL,
+  seats      TINYINT      NOT NULL CHECK(seats > 0),
+  type       ROOM_TYPE    NOT NULL,
+  created_at DATETIME     NOT NULL,
+  updated_at DATETIME     NOT NULL
+);
