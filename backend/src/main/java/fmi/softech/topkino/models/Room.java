@@ -1,11 +1,35 @@
 package fmi.softech.topkino.models;
 
+
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "rooms")
 public class Room {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "seats")
     private Integer seats;
+
+    @Column(name = "type")
     private RoomType type;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     private enum RoomType {
         R_2D,
         R_3D;
