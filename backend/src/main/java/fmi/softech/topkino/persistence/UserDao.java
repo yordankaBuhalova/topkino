@@ -1,7 +1,8 @@
 package fmi.softech.topkino.persistence;
 
 import fmi.softech.topkino.exceptions.DaoException;
-import fmi.softech.topkino.models.Room;
+import fmi.softech.topkino.models.Movie;
+import fmi.softech.topkino.models.User;
 import fmi.softech.topkino.utils.DBDriver;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
@@ -11,47 +12,49 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class RoomDao {
+public class UserDao {
+
     private final Session dbSession;
 
     @Autowired
-    public RoomDao() {
+    public UserDao() {
         dbSession = DBDriver.getSessionFactory().openSession();
     }
 
-    public List<Room> getAll() throws DaoException, ConstraintViolationException {
+    public List<User> getAll() throws DaoException, ConstraintViolationException {
         try {
-            return dbSession.createQuery("from Room", Room.class).list();
+            return dbSession.createQuery("from User", User.class).list();
         } catch (Exception e) {
             throw new DaoException(e.getMessage());
         }
     }
 
-    public Room getOneById(Long id) throws DaoException {
+    public User getOneById(Long id) throws DaoException {
         try {
-            // return room
-            return dbSession.get(Room.class, id);
+            // return user
+            return dbSession.get(User.class, id);
         } catch (Exception e) {
             throw new DaoException(e.getMessage());
         }
     }
 
-    public Room addRoom(Room room) throws DaoException, PersistenceException {
+    public User addUser(User user) throws DaoException, PersistenceException {
         Transaction transaction = null;
         try {
             // start a transaction
             transaction = dbSession.beginTransaction();
 
             // save the object
-            dbSession.persist(room);
+            dbSession.persist(user);
 
             // commit transaction
             transaction.commit();
 
-            return room;
+            return user;
         } catch (PersistenceException e) {
             throw e;
         } catch (Exception e) {
@@ -62,19 +65,19 @@ public class RoomDao {
         }
     }
 
-    public Room updateRoom(Room room) throws DaoException, PersistenceException  {
+    public User updateUser(User user) throws DaoException, PersistenceException  {
         Transaction transaction = null;
         try {
             // start a transaction
             transaction = dbSession.beginTransaction();
 
-            // save the room object
-            dbSession.merge(room);
+            // save the user object
+            dbSession.merge(user);
 
             // commit transaction
             transaction.commit();
 
-            return room;
+            return user;
         } catch (PersistenceException e) {
             throw e;
         } catch (Exception e) {
@@ -85,19 +88,19 @@ public class RoomDao {
         }
     }
 
-    public void deleteRoom(Long roomID) throws DaoException, EntityNotFoundException {
+    public void deleteUser(Long userID) throws DaoException, EntityNotFoundException {
         Transaction transaction = null;
         try {
             // start a transaction
             transaction = dbSession.beginTransaction();
 
-            // remove the room object
-            Room room = dbSession.get(Room.class, roomID);
+            // remove the user object
+            User user = dbSession.get(User.class, userID);
 
-            if(room != null) {
-                dbSession.remove(room);
+            if(user != null) {
+                dbSession.remove(user);
             } else {
-                throw new EntityNotFoundException("Room with id " + roomID + " not found");
+                throw new EntityNotFoundException("User with id " + userID + " not found");
             }
             // commit transaction
             transaction.commit();
@@ -111,3 +114,4 @@ public class RoomDao {
         }
     }
 }
+

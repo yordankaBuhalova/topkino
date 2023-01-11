@@ -1,7 +1,8 @@
 package fmi.softech.topkino.persistence;
 
 import fmi.softech.topkino.exceptions.DaoException;
-import fmi.softech.topkino.models.Room;
+import fmi.softech.topkino.models.Movie;
+import fmi.softech.topkino.models.Reservation;
 import fmi.softech.topkino.utils.DBDriver;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
@@ -11,47 +12,49 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class RoomDao {
+public class ReservationDao {
+
     private final Session dbSession;
 
     @Autowired
-    public RoomDao() {
+    public ReservationDao() {
         dbSession = DBDriver.getSessionFactory().openSession();
     }
 
-    public List<Room> getAll() throws DaoException, ConstraintViolationException {
+    public List<Reservation> getAll() throws DaoException, ConstraintViolationException {
         try {
-            return dbSession.createQuery("from Room", Room.class).list();
+            return dbSession.createQuery("from Reservation", Reservation.class).list();
         } catch (Exception e) {
             throw new DaoException(e.getMessage());
         }
     }
 
-    public Room getOneById(Long id) throws DaoException {
+    public Reservation getOneById(Long id) throws DaoException {
         try {
-            // return room
-            return dbSession.get(Room.class, id);
+            // return reservation
+            return dbSession.get(Reservation.class, id);
         } catch (Exception e) {
             throw new DaoException(e.getMessage());
         }
     }
 
-    public Room addRoom(Room room) throws DaoException, PersistenceException {
+    public Reservation addReservation(Reservation reservation) throws DaoException, PersistenceException {
         Transaction transaction = null;
         try {
             // start a transaction
             transaction = dbSession.beginTransaction();
 
             // save the object
-            dbSession.persist(room);
+            dbSession.persist(reservation);
 
             // commit transaction
             transaction.commit();
 
-            return room;
+            return reservation;
         } catch (PersistenceException e) {
             throw e;
         } catch (Exception e) {
@@ -62,19 +65,19 @@ public class RoomDao {
         }
     }
 
-    public Room updateRoom(Room room) throws DaoException, PersistenceException  {
+    public Reservation updateReservation(Reservation reservation) throws DaoException, PersistenceException  {
         Transaction transaction = null;
         try {
             // start a transaction
             transaction = dbSession.beginTransaction();
 
-            // save the room object
-            dbSession.merge(room);
+            // save the reservation object
+            dbSession.merge(reservation);
 
             // commit transaction
             transaction.commit();
 
-            return room;
+            return reservation;
         } catch (PersistenceException e) {
             throw e;
         } catch (Exception e) {
@@ -85,19 +88,19 @@ public class RoomDao {
         }
     }
 
-    public void deleteRoom(Long roomID) throws DaoException, EntityNotFoundException {
+    public void deleteReservation(Long reservationID) throws DaoException, EntityNotFoundException {
         Transaction transaction = null;
         try {
             // start a transaction
             transaction = dbSession.beginTransaction();
 
-            // remove the room object
-            Room room = dbSession.get(Room.class, roomID);
+            // remove the reservation object
+            Reservation reservation = dbSession.get(Reservation.class, reservationID);
 
-            if(room != null) {
-                dbSession.remove(room);
+            if(reservation != null) {
+                dbSession.remove(reservation);
             } else {
-                throw new EntityNotFoundException("Room with id " + roomID + " not found");
+                throw new EntityNotFoundException("Reservation with id " + reservationID + " not found");
             }
             // commit transaction
             transaction.commit();
@@ -111,3 +114,4 @@ public class RoomDao {
         }
     }
 }
+

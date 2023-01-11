@@ -10,7 +10,6 @@ spring:
     username: "sa"
     password: ""
     driver-class-name: "org.h2.Driver"
-#    data: sql/insertData.sql
   h2:
     console:
       enabled: true
@@ -25,3 +24,5 @@ spring:
       max-request-size: 15MB
 server:
   port: 8080
+  error:
+    include-message: always

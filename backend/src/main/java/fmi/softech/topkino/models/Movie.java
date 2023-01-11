@@ -1,18 +1,53 @@
 package fmi.softech.topkino.models;
 
+import jakarta.persistence.*;
+
+import java.util.Arrays;
 import java.util.Objects;
 
+@Entity
+@Table(name = "movies")
 public class Movie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+    @Column(name = "title", unique = true, nullable = false, length = 50)
     private String title;
+    @Lob
+    @Column(name = "image", length = 1000)
+    private byte[] img;
+    @Column(name = "genre", nullable = false, length = 30)
     private String genre;
+    @Column(name = "duration", nullable = false)
     private Integer duration;
+    @Column(name = "description")
     private String description;
-    private Integer year;
+    @Column(name = "releaseYear", nullable = false, length = 4)
+    private Integer releaseYear;
+    @Column(name = "language", nullable = false, length = 30)
     private String language;
+    @Column(name = "trailerUrl", length = 200)
     private String trailerUrl;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
+    }
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
     }
 
     public String getGenre() {
@@ -27,8 +62,8 @@ public class Movie {
         return description;
     }
 
-    public Integer getYear() {
-        return year;
+    public Integer getReleaseYear() {
+        return releaseYear;
     }
 
     public String getLanguage() {
@@ -59,8 +94,8 @@ public class Movie {
         this.language = language;
     }
 
-    public void setYear(Integer year) {
-        this.year = year;
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     public void setTrailerUrl(String trailerUrl) {
@@ -70,11 +105,13 @@ public class Movie {
     @Override
     public String toString() {
         return "Movie{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", img=" + Arrays.toString(img) +
                 ", genre='" + genre + '\'' +
                 ", duration=" + duration +
                 ", description='" + description + '\'' +
-                ", year=" + year +
+                ", releaseYear=" + releaseYear +
                 ", language='" + language + '\'' +
                 ", trailerUrl='" + trailerUrl + '\'' +
                 '}';
@@ -85,11 +122,11 @@ public class Movie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return title.equals(movie.title) && genre.equals(movie.genre) && duration.equals(movie.duration) && description.equals(movie.description) && year.equals(movie.year) && language.equals(movie.language) && trailerUrl.equals(movie.trailerUrl);
+        return title.equals(movie.title) && genre.equals(movie.genre) && duration.equals(movie.duration) && description.equals(movie.description) && releaseYear.equals(movie.releaseYear) && language.equals(movie.language) && trailerUrl.equals(movie.trailerUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, genre, duration, description, year, language, trailerUrl);
+        return Objects.hash(title, genre, duration, description, releaseYear, language, trailerUrl);
     }
 }

@@ -25,5 +25,10 @@
         <property name="hibernate.dbcp.minIdle">5</property>
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
         <mapping class="fmi.softech.topkino.models.Room" />
+        <mapping class="fmi.softech.topkino.models.Movie" />
+        <mapping class="fmi.softech.topkino.models.Projection" />
+        <mapping class="fmi.softech.topkino.models.User" />
+        <mapping class="fmi.softech.topkino.models.Reservation" />
+
     </session-factory>
 </hibernate-configuration>

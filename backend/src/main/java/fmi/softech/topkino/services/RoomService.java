@@ -4,6 +4,8 @@ import fmi.softech.topkino.exceptions.DaoException;
 import fmi.softech.topkino.exceptions.NotFoundException;
 import fmi.softech.topkino.models.Room;
 import fmi.softech.topkino.persistence.RoomDao;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,24 +36,24 @@ public class RoomService {
         }
     }
 
-    public void addRoom(Room room) {
+    public Room addRoom(Room room) throws PersistenceException {
         try {
-            roomDao.addRoom(room);
+            return roomDao.addRoom(room);
         } catch (DaoException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public void updateRoom(Long roomID, Room room) {
+    public Room updateRoom(Long roomID, Room room) throws PersistenceException {
         try {
             room.setId(roomID);
-            roomDao.updateRoom(room);
+            return roomDao.updateRoom(room);
         } catch (DaoException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public void deleteRoom(Long roomID) {
+    public void deleteRoom(Long roomID) throws EntityNotFoundException {
         try {
             roomDao.deleteRoom(roomID);
         } catch (DaoException e) {

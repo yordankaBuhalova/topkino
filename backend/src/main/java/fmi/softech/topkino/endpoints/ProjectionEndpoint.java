@@ -1,9 +1,8 @@
 package fmi.softech.topkino.endpoints;
 
 import fmi.softech.topkino.exceptions.NotFoundException;
-import fmi.softech.topkino.models.Movie;
-import fmi.softech.topkino.models.Movie;
-import fmi.softech.topkino.services.MovieService;
+import fmi.softech.topkino.models.Projection;
+import fmi.softech.topkino.services.ProjectionService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +13,35 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movies")
-public class MovieEndpoint {
-    private final MovieService movieService;
+@RequestMapping("/projections")
+public class ProjectionEndpoint {
+    private final ProjectionService projectionService;
 
     @Autowired
-    public MovieEndpoint(MovieService movieService) {
-        this.movieService = movieService;
+    public ProjectionEndpoint(ProjectionService projectionService) {
+        this.projectionService = projectionService;
     }
     @GetMapping
-    public List<Movie> getAll() {
-        return movieService.getAll();
+    public List<Projection> getAll() {
+        return projectionService.getAll();
     }
 
     @GetMapping(value = "/{id}")
-    public Movie getOneById(@PathVariable("id") Long id) {
+    public Projection getOneById(@PathVariable("id") Long id) {
         try {
-            return movieService.getOneById(id);
+            return projectionService.getOneById(id);
         } catch (NotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Projection not found");
         }
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Movie addMovie(@RequestBody Movie movie) {
+    public Projection addProjection(@RequestBody Projection projection) {
         try {
-            return movieService.addMovie(movie);
+            return projectionService.addProjection(projection);
         } catch (PersistenceException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Movie with this name already exists");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Projection with this name already exists");
         } catch (RuntimeException e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not process entity");
@@ -51,9 +50,9 @@ public class MovieEndpoint {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Movie updateMovie(@PathVariable("id") Long id, @RequestBody Movie movie) {
+    public Projection updateProjection(@PathVariable("id") Long id, @RequestBody Projection projection) {
         try {
-            return movieService.updateMovie(id, movie);
+            return projectionService.updateProjection(id, projection);
         } catch (PersistenceException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "INCORRECT INPUT");
         } catch (RuntimeException e) {
@@ -64,11 +63,11 @@ public class MovieEndpoint {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMovie(@PathVariable("id") Long id) {
+    public void deleteProjection(@PathVariable("id") Long id) {
         try {
-            movieService.deleteMovie(id);
+            projectionService.deleteProjection(id);
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Projection not found");
         } catch (RuntimeException e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not process entity");

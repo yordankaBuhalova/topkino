@@ -1,6 +1,5 @@
 package fmi.softech.topkino.models;
 
-
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -13,26 +12,21 @@ public class Room {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false, length = 50)
     private String name;
 
-    @Column(name = "seats")
+    @Column(name = "seats", nullable = false)
     private Integer seats;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private RoomType type;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     private enum RoomType {
         R_2D,
         R_3D;
+    }
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -45,6 +39,10 @@ public class Room {
 
     public RoomType getType() {
         return type;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {
