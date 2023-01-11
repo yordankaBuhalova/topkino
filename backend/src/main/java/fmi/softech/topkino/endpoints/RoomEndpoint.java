@@ -1,12 +1,13 @@
 package fmi.softech.topkino.endpoints;
 
+import fmi.softech.topkino.exceptions.NotFoundException;
 import fmi.softech.topkino.models.Room;
 import fmi.softech.topkino.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,11 @@ public class RoomEndpoint {
 
     @GetMapping(value = "/{id}")
     public Room getOneById(@PathVariable("id") Long id) {
-        return roomService.getOneById(id);
+        try {
+            return roomService.getOneById(id);
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found");
+        }
     }
 
     @PostMapping

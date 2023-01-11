@@ -1,5 +1,7 @@
 package fmi.softech.topkino.services;
 
+import fmi.softech.topkino.exceptions.DaoException;
+import fmi.softech.topkino.exceptions.NotFoundException;
 import fmi.softech.topkino.models.Room;
 import fmi.softech.topkino.persistence.RoomDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +19,43 @@ public class RoomService {
     }
 
     public List<Room> getAll() {
-        return roomDao.getAll();
+        try {
+            return roomDao.getAll();
+        } catch (DaoException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
-    public Room getOneById(Long id) {
-        return roomDao.getOneById(id);
+    public Room getOneById(Long id) throws NotFoundException {
+        try {
+            return roomDao.getOneById(id);
+        } catch (DaoException e) {
+            throw new NotFoundException(e.getMessage());
+        }
     }
 
     public void addRoom(Room room) {
-        roomDao.addRoom(room);
+        try {
+            roomDao.addRoom(room);
+        } catch (DaoException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public void updateRoom(Long roomID, Room room) {
-        roomDao.updateRoom(roomID, room);
+        try {
+            room.setId(roomID);
+            roomDao.updateRoom(room);
+        } catch (DaoException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public void deleteRoom(Long roomID) {
-        roomDao.deleteRoom(roomID);
+        try {
+            roomDao.deleteRoom(roomID);
+        } catch (DaoException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
