@@ -1,6 +1,7 @@
 package fmi.softech.topkino.models;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "reservations")
-public class Reservation {
+public class Reservation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
