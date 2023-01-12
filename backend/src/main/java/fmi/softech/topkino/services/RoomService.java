@@ -28,6 +28,14 @@ public class RoomService {
         }
     }
 
+    public List<Room> getAllFiltered(Room room) {
+        try {
+            return roomDao.getAllFiltered(room);
+        } catch (DaoException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public Room getOneById(Long id) throws NotFoundException {
         try {
             return roomDao.getOneById(id);

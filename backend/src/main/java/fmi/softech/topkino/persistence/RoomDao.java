@@ -5,12 +5,17 @@ import fmi.softech.topkino.models.Room;
 import fmi.softech.topkino.utils.DBDriver;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -25,6 +30,37 @@ public class RoomDao {
     public List<Room> getAll() throws DaoException, ConstraintViolationException {
         try {
             return dbSession.createQuery("from Room", Room.class).list();
+        } catch (Exception e) {
+            throw new DaoException(e.getMessage());
+        }
+    }
+
+    public List<Room> getAllFiltered(Room room) throws DaoException, ConstraintViolationException {
+        try {
+            CriteriaBuilder cb = dbSession.getCriteriaBuilder();
+            CriteriaQuery<Room> cr = cb.createQuery(Room.class);
+            Root<Room> root = cr.from(Room.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            if(room.getName() != null) {
+                predicates.add(cb.like(root.get("name"), room.getName()));
+            }
+
+            if(room.getType() != null) {
+                predicates.add(cb.equal(root.get("type"), room.getType()));
+            }
+
+            if(room.getSeats() != null) {
+                predicates.add(cb.ge(root.get("seats"), room.getSeats()));
+            }
+
+            Predicate[] predicatesArray = new Predicate[predicates.size()];
+            predicates.toArray(predicatesArray);
+
+            cr.select(root).where(predicatesArray);
+
+            return dbSession.createQuery(cr).list();
         } catch (Exception e) {
             throw new DaoException(e.getMessage());
         }

@@ -2,11 +2,12 @@ package fmi.softech.topkino.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "rooms")
-public class Room {
+public class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -15,16 +16,12 @@ public class Room {
     @Column(name = "name", unique = true, nullable = false, length = 50)
     private String name;
 
-    @Column(name = "seats", nullable = false)
+    @Column(name = "seats", nullable = false )
     private Integer seats;
 
     @Column(name = "type", nullable = false)
     private RoomType type;
 
-    private enum RoomType {
-        R_2D,
-        R_3D;
-    }
     public Long getId() {
         return id;
     }

@@ -2,6 +2,7 @@ package fmi.softech.topkino.endpoints;
 
 import fmi.softech.topkino.exceptions.NotFoundException;
 import fmi.softech.topkino.models.Room;
+import fmi.softech.topkino.models.RoomType;
 import fmi.softech.topkino.services.RoomService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
@@ -22,9 +23,19 @@ public class RoomEndpoint {
     public RoomEndpoint(RoomService roomService) {
         this.roomService = roomService;
     }
+
     @GetMapping
     public List<Room> getAll() {
         return roomService.getAll();
+    }
+
+    @GetMapping(value="/filter")
+    public List<Room> getAllFiltered(@RequestParam(required = false) String name, @RequestParam(required = false) Integer seats, @RequestParam(required = false) RoomType type) {
+        Room room = new Room();
+        room.setName(name);
+        room.setSeats(seats);
+        room.setType(type);
+        return roomService.getAllFiltered(room);
     }
 
     @GetMapping(value = "/{id}")

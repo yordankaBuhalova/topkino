@@ -4,6 +4,7 @@ import fmi.softech.topkino.exceptions.DaoException;
 import fmi.softech.topkino.exceptions.NotFoundException;
 import fmi.softech.topkino.models.Movie;
 import fmi.softech.topkino.models.Movie;
+import fmi.softech.topkino.models.Movie;
 import fmi.softech.topkino.persistence.MovieDao;
 import fmi.softech.topkino.persistence.MovieDao;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,6 +32,13 @@ public class MovieService {
         }
     }
 
+    public List<Movie> getAllFiltered(Movie movie) {
+        try {
+            return movieDao.getAllFiltered(movie);
+        } catch (DaoException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
     public Movie getOneById(Long id) throws NotFoundException {
         try {
             return movieDao.getOneById(id);

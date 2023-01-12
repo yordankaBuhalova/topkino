@@ -2,7 +2,6 @@ package fmi.softech.topkino.endpoints;
 
 import fmi.softech.topkino.exceptions.NotFoundException;
 import fmi.softech.topkino.models.Movie;
-import fmi.softech.topkino.models.Movie;
 import fmi.softech.topkino.services.MovieService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
@@ -25,6 +24,14 @@ public class MovieEndpoint {
     @GetMapping
     public List<Movie> getAll() {
         return movieService.getAll();
+    }
+    @GetMapping(value="/filter")
+    public List<Movie> getAllFiltered(@RequestParam(required = false) String title, @RequestParam(required = false) String genre, @RequestParam(required = false) Integer releaseYear) {
+        Movie movie = new Movie();
+        movie.setTitle(title);
+        movie.setGenre(genre);
+        movie.setReleaseYear(releaseYear);
+        return movieService.getAllFiltered(movie);
     }
 
     @GetMapping(value = "/{id}")

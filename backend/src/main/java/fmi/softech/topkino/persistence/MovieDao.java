@@ -3,9 +3,14 @@ package fmi.softech.topkino.persistence;
 import fmi.softech.topkino.exceptions.DaoException;
 import fmi.softech.topkino.models.Movie;
 import fmi.softech.topkino.models.Movie;
+import fmi.softech.topkino.models.Movie;
 import fmi.softech.topkino.utils.DBDriver;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
@@ -30,7 +35,36 @@ public class MovieDao {
             throw new DaoException(e.getMessage());
         }
     }
+    public List<Movie> getAllFiltered(Movie movie) throws DaoException, ConstraintViolationException {
+        try {
+            CriteriaBuilder cb = dbSession.getCriteriaBuilder();
+            CriteriaQuery<Movie> cr = cb.createQuery(Movie.class);
+            Root<Movie> root = cr.from(Movie.class);
 
+            List<Predicate> predicates = new ArrayList<>();
+
+            if(movie.getTitle() != null) {
+                predicates.add(cb.like(root.get("title"), movie.getTitle()));
+            }
+
+            if(movie.getGenre() != null) {
+                predicates.add(cb.equal(root.get("genre"), movie.getGenre()));
+            }
+
+            if(movie.getReleaseYear() != null) {
+                predicates.add(cb.ge(root.get("releaseYear"), movie.getReleaseYear()));
+            }
+
+            Predicate[] predicatesArray = new Predicate[predicates.size()];
+            predicates.toArray(predicatesArray);
+
+            cr.select(root).where(predicatesArray);
+
+            return dbSession.createQuery(cr).list();
+        } catch (Exception e) {
+            throw new DaoException(e.getMessage());
+        }
+    }
     public Movie getOneById(Long id) throws DaoException {
         try {
             // return movie
