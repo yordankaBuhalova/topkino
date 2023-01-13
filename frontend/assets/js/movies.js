@@ -82,7 +82,7 @@ function addMovie() {
         },
         success: function(data, status) {
             alert("Movie created")
-            getAllMvoies()
+            getAllMovies()
             removeModal('#movieAddModal')
 
         },

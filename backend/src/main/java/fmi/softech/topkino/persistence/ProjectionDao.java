@@ -44,7 +44,7 @@ public class ProjectionDao {
             transaction = dbSession.beginTransaction();
 
             // save the object
-            dbSession.persist(projection);
+            dbSession.merge(projection);
 
             // commit transaction
             transaction.commit();
