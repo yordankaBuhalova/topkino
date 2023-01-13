@@ -156,7 +156,7 @@ function renderProjections(data) {
             $.ajax({
                 url: Config().API_URL + '/rooms/' + projection.room,
                 success: function(data, status) {
-                    roomName = data.name;
+                    roomName = data.name
                 },
                 async: false
             })
@@ -164,13 +164,17 @@ function renderProjections(data) {
             $.ajax({
                 url: Config().API_URL + '/movies/' + projection.movie,
                 success: function(data, status) {
-                    movieName = data.title;
+                    movieName = data.title
+                    movieImage = data.img
                 },
                 async: false
             })
 
             $("#projection-list").append(`
                 <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="col-ms-2">
+                        <img src=" ` + movieImage + `" class="img-thumbnail rounded-start" alt="...">
+                    </div>
                     <div class="ms-2 me-auto">
                         <p class="fw-bold">` + movieName + `</p>
                         <p>Room: `+ roomName + `</p>

@@ -54,13 +54,15 @@ function getFilteredMovies() {
     })
 }
 
-function addMovie() {
+async function addMovie() {
     dataType = "json"
     var $form = $("#addMovie")
 
+    encodedImage = await imageToBase64($form.find( "input[id='inputImage']" )[0].files[0])
+
     var data = {
         "title": $form.find( "input[id='inputTitle']" ).val(),
-        "img": $form.find( "input[id='inputImage']" ).val(),
+        "img": encodedImage,
         "genre": $form.find( "input[id='inputGenre']" ).val(),
         "duration":  $form.find( "input[id='inputDuration']" ).val(),
         "description": $form.find( "input[id='inputDescription']" ).val() ,
@@ -69,7 +71,9 @@ function addMovie() {
         "trailerUrl": $form.find( "input[id='inputTrailer']" ).val()
 
     }
+
     console.log(data)
+
     $.ajax({
         url: Config().API_URL + '/movies',
         type: "POST",
@@ -97,13 +101,15 @@ function removeModal(modal_id){
 
 }
 
-function editMovie(id) {
+async function editMovie(id) {
     dataType = "json"
     var $form = $("#editMovie"+ id)
 
+    encodedImage = await imageToBase64($form.find( "input[id='inputImage" + id + "']" )[0].files[0])
+
     var data = {
         "title": $form.find( "input[id='inputTitle" + id + "']" ).val(),
-        "img": $form.find( "input[id='inputImage" + id + "']" ).val(),
+        "img": encodedImage,
         "genre": $form.find( "input[id='inputGenre" + id + "']" ).val(),
         "duration":  $form.find( "input[id='inputDuration" + id + "']" ).val(),
         "description": $form.find( "input[id='inputDescription" + id + "']" ).val() ,
@@ -150,6 +156,15 @@ function cleanMovieList() {
     $("#movie-list").empty()
 }
 
+function imageToBase64(file) {
+    return new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function() { resolve(reader.result); };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
 function renderMovies(data) {
 
     if(data.length != 0) {
@@ -176,7 +191,7 @@ function renderMovies(data) {
                         Language: ` + movie.language + `
                         </small>
                         <small class="d-flex fst-italic fw-lighter text-wrap ">
-                        Trailer: ` + movie.trailerUrl + `
+                        Trailer: <a href="` + movie.trailerUrl + `" target="blank">Click here</a>
                         </small>
 
                         <p>

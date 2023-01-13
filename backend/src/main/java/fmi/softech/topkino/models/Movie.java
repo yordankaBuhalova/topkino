@@ -15,9 +15,9 @@ public class Movie implements Serializable {
     private Long id;
     @Column(name = "title", unique = true, nullable = false, length = 50)
     private String title;
+    @Column(name = "image")
     @Lob
-    @Column(name = "image", length = 1000)
-    private byte[] img;
+    private String img;
     @Column(name = "genre", nullable = false, length = 30)
     private String genre;
     @Column(name = "duration", nullable = false)
@@ -43,11 +43,11 @@ public class Movie implements Serializable {
         return title;
     }
 
-    public byte[] getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(byte[] img) {
+    public void setImg(String img) {
         this.img = img;
     }
 
@@ -108,7 +108,7 @@ public class Movie implements Serializable {
         return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", img=" + Arrays.toString(img) +
+                ", img=" + img +
                 ", genre='" + genre + '\'' +
                 ", duration=" + duration +
                 ", description='" + description + '\'' +
