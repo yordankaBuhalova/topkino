@@ -10,6 +10,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,7 +24,12 @@ public class UserService {
 
     public List<User> getAll() {
         try {
-            return userDao.getAll();
+            List<User> users = new ArrayList<>();
+            for (User user: userDao.getAll()) {
+                user.setPassword("");
+                users.add(user);
+            }
+            return users;
         } catch (DaoException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -31,7 +37,9 @@ public class UserService {
 
     public User getOneById(Long id) throws NotFoundException {
         try {
-            return userDao.getOneById(id);
+            User user = userDao.getOneById(id);
+            user.setPassword("");
+            return user;
         } catch (DaoException e) {
             throw new NotFoundException(e.getMessage());
         }
@@ -41,7 +49,9 @@ public class UserService {
         try {
             String hashedPass = DigestUtils.sha256Hex(user.getPassword());
             user.setPassword(hashedPass);
-            return userDao.addUser(user);
+            User newUser = userDao.addUser(user);
+            newUser.setPassword("");
+            return newUser;
         } catch (DaoException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -56,8 +66,9 @@ public class UserService {
             if(!hashedPass.equals(currentUser.getPassword())) {
                 user.setPassword(hashedPass);
             }
-
-            return userDao.updateUser(user);
+            User newUser = userDao.updateUser(user);
+            newUser.setPassword("");
+            return newUser;
         } catch (DaoException e) {
             throw new RuntimeException(e.getMessage());
         } catch (NotFoundException e) {
