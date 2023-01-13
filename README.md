@@ -7,7 +7,7 @@ TopKino
 4. Run:
 
     ```bash
-    docker-compose up
+    docker-compose up --build
     ```
 
 5. UI is accessible under <http://localhost:8081>, API - under <http://localhost:8080>
