@@ -2,8 +2,6 @@ package fmi.softech.topkino.persistence;
 
 import fmi.softech.topkino.exceptions.DaoException;
 import fmi.softech.topkino.models.Movie;
-import fmi.softech.topkino.models.Movie;
-import fmi.softech.topkino.models.Movie;
 import fmi.softech.topkino.utils.DBDriver;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
@@ -22,20 +20,20 @@ import java.util.List;
 
 @Repository
 public class MovieDao {
-    private final Session dbSession;
 
-    @Autowired
-    public MovieDao() {
-        dbSession = DBDriver.getSessionFactory().openSession();
-    }
     public List<Movie> getAll() throws DaoException, ConstraintViolationException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         try {
             return dbSession.createQuery("from Movie", Movie.class).list();
         } catch (Exception e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
     public List<Movie> getAllFiltered(Movie movie) throws DaoException, ConstraintViolationException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
+
         try {
             CriteriaBuilder cb = dbSession.getCriteriaBuilder();
             CriteriaQuery<Movie> cr = cb.createQuery(Movie.class);
@@ -44,11 +42,11 @@ public class MovieDao {
             List<Predicate> predicates = new ArrayList<>();
 
             if(movie.getTitle() != null) {
-                predicates.add(cb.like(root.get("title"), movie.getTitle()));
+                predicates.add(cb.like(cb.lower(root.get("title")), "%" + movie.getTitle().toLowerCase() + "%"));
             }
 
             if(movie.getGenre() != null) {
-                predicates.add(cb.equal(root.get("genre"), movie.getGenre()));
+                predicates.add(cb.like(cb.lower(root.get("genre")), "%" + movie.getGenre().toLowerCase() + "%"));
             }
 
             if(movie.getReleaseYear() != null) {
@@ -62,19 +60,25 @@ public class MovieDao {
 
             return dbSession.createQuery(cr).list();
         } catch (Exception e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
     public Movie getOneById(Long id) throws DaoException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         try {
             // return movie
             return dbSession.get(Movie.class, id);
         } catch (Exception e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 
     public Movie addMovie(Movie movie) throws DaoException, PersistenceException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             // start a transaction
@@ -93,11 +97,14 @@ public class MovieDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 
     public Movie updateMovie(Movie movie)throws DaoException, PersistenceException  {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             // start a transaction
@@ -116,11 +123,14 @@ public class MovieDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 
     public void deleteMovie(Long movieID) throws DaoException, EntityNotFoundException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             // start a transaction
@@ -142,7 +152,9 @@ public class MovieDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 }

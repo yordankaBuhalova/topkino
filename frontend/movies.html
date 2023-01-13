@@ -16,11 +16,107 @@
     <div id="navigation"></div>
 
     <div class="container-fluid">
-        <h2>Movies</h2>
-        <button type="button" class="btn btn-dark ">Add</button>
+		<div class="row">
+			<div class="col-md-1">
+				<h2>Movies</h2>
+			</div>
+
+			<div class="col">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#movieAddModal">
+                    Add
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="movieAddModal" tabindex="-1" aria-labelledby="movieAddModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="movieAddModalLabel">Add movie</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+							<form action="" id="addMovie">
+								<div class="mb-3 row">
+									<label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+									<div class="col-sm-10">
+										<input type="text"  class="form-control" maxlength="30" id="inputTitle" value="">
+									</div>
+								</div>
+								<div class="mb-3 row">
+									<label for="inputImage" class="col-md-2 col-form-label">Image</label>
+									<div class="col-md-10">
+										<input type="file" accept="image/*" class="form-control" maxlength="30" id="inputImage">
+									</div>
+								</div>
+								<div class="mb-3 row">
+									<label for="inputGenre" class="col-md-2 col-form-label">Genre</label>
+									<div class="col-md-10">
+										<input type="text" class="form-control" maxlength="30" id="inputGenre">
+									</div>
+								</div>
+								<div class="mb-3 row">
+									<label for="inputDuration" class="col-md-2 col-form-label">Duration</label>
+									<div class="col-md-10">
+										<input type="text" class="form-control" maxlength="30" id="inputDuration">
+									</div>
+								</div>
+								<div class="mb-3 row">
+									<label for="inputYear" class="col-md-2 col-form-label">Release Year</label>
+									<div class="col-md-10">
+										<input type="text" class="form-control" maxlength="4" id="inputYear">
+									</div>
+								</div>
+								<div class="mb-3 row">
+									<label for="inputLang" class="col-md-2 col-form-label">Language</label>
+									<div class="col-md-10">
+										<input type="text" class="form-control" maxlength="30" id="inputLang">
+									</div>
+								</div>
+								<div class="mb-3 row">
+									<label for="inputTrailer" class="col-md-2 col-form-label">Trailer Url</label>
+									<div class="col-md-10">
+										<input type="text" class="form-control" maxlength="200" id="inputTrailer">
+									</div>
+								</div>
+								<div class="mb-3 row">
+									<label for="inputDescription" class="col-md-2 col-form-label">Description</label>
+									<div class="col-md-10">
+										<textarea class="form-control" rows="3"  id="inputDescription"></textarea>
+									</div>
+								</div>
+							</form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="addMovie()">Save changes</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+				</div>
+		</div>
+
         <div class="card">
           <div class="card-body">
-            Filters
+
+			<h2> Filters</h2>
+            <form>
+				<div class="row">
+				<div class="mb-3 col-md-2">
+					<label for="movieTitleFilter" class="form-label">Title</label>
+					<input type="text" class="form-control"  id="movieTitleFilter" aria-label="Title" placeholder="Title...">
+				</div>
+				<div class="mb-3 col-md-2">
+					<label for="movieGenreFilter" class="form-label">Movie Genre</label>
+					<input type="text" class="form-control"  id="movieGenreFilter" aria-label="Genre" placeholder="Genre...">
+				</div>
+				<div class="mb-3 col-md-2">
+					<label for="movieYearFilter" class="form-label">Release year</label>
+					<input type="text" class="form-control"  id="movieYearFilter" aria-label="Release" maxlength="4" placeholder="Year..">
+				</div></div>
+                <button class="btn btn-primary" type="button" onclick="getFilteredMovies()"> Filter</button>
+            </form>
           </div>
         </div>
         <ol id="movie-list" class="list-group list-group-numbered"></ol>

@@ -26,6 +26,14 @@ public class UserEndpoint {
         return userService.getAll();
     }
 
+    @GetMapping(value="/filter")
+    public List<User> getAllFiltered(@RequestParam(required = false) String name, @RequestParam(required = false) boolean admin) {
+        User user = new User();
+        user.setUsername(name);
+        user.setAdmin(admin);
+        return userService.getAllFiltered(user);
+    }
+    
     @GetMapping(value = "/{id}")
     public User getOneById(@PathVariable("id") Long id) {
         try {

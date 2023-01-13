@@ -24,7 +24,7 @@ public class ProjectionService {
         try {
             return projectionDao.getAll();
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -40,7 +40,7 @@ public class ProjectionService {
         try {
             return projectionDao.addProjection(projection);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -49,7 +49,7 @@ public class ProjectionService {
             projection.setId(projectionID);
             return projectionDao.updateProjection(projection);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -57,7 +57,7 @@ public class ProjectionService {
         try {
             projectionDao.deleteProjection(projectionID);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

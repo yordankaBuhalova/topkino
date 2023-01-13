@@ -24,7 +24,7 @@ public class RoomService {
         try {
             return roomDao.getAll();
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -32,7 +32,7 @@ public class RoomService {
         try {
             return roomDao.getAllFiltered(room);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -48,7 +48,7 @@ public class RoomService {
         try {
             return roomDao.addRoom(room);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -57,7 +57,7 @@ public class RoomService {
             room.setId(roomID);
             return roomDao.updateRoom(room);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -65,7 +65,7 @@ public class RoomService {
         try {
             roomDao.deleteRoom(roomID);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

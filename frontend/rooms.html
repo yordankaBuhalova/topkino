@@ -14,17 +14,78 @@
 </head>
 <body class="body" >
     <div id="navigation"></div>
-
     <div class="container-fluid">
 
-        <h2>Rooms</h2>
 
-        <button type="button" class="btn btn-dark ">Add</button>
+        <div class="row">
+			<div class="col-md-1">
+				<h2>Rooms</h2>
+			</div>
+
+			<div class="col  ">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#roomAddModal">
+                    Add
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="roomAddModal" tabindex="-1" aria-labelledby="roomAddModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="roomAddModalLabel">Add room</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" id="addRoom">
+                                <div class="mb-3 row">
+                                    <label for="roomName" class="col-sm-2 col-form-label">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text"  class="form-control" id="roomName" value="">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="inputSeats" class="col-sm-2 col-form-label">Seats</label>
+                                    <div class="col-md-10">
+                                        <input type="number" class="form-control" min="10" max="3"  id="inputSeats">
+                                    </div>
+                                </div>
+                                <div class="mb-3 ml-2 row">
+
+                                    <label for="roomTypeAdd" class="col-sm-2 col-form-label">Room type</label>
+                                    <div class="col-md-10">
+                                        <select class="form-select" id="roomTypeAdd" aria-label="Room Type">
+                                            <option value="R_2D">2D</option>
+                                            <option value="R_3D">3D</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="addRoom()">Save changes</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+		</div>
 
         <div class="card">
-        <div class="card-body">
-            Filters
-        </div>
+            <div class="card-body">
+                Filters
+                <form>
+                    <div class="col-md-2">
+                        <label for="roomTypeFilter" class="form-label">Room Type</label>
+                        <select class="form-select" id="roomTypeFilter" aria-label="Room Type">
+                            <option value="all" selected>All</option>
+                            <option value="R_2D">2D</option>
+                            <option value="R_3D">3D</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" type="button" onclick="getFilteredRooms()"> Filter</button>
+                </form>
+            </div>
         </div>
 
         <ol id="room-list" class="list-group list-group-numbered"></ol>

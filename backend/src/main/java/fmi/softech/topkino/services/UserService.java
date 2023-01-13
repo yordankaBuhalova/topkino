@@ -31,10 +31,18 @@ public class UserService {
             }
             return users;
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
+    public List<User> getAllFiltered(User user) {
+        try {
+            return userDao.getAllFiltered(user);
+        } catch (DaoException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     public User getOneById(Long id) throws NotFoundException {
         try {
             User user = userDao.getOneById(id);
@@ -53,7 +61,7 @@ public class UserService {
             newUser.setPassword("");
             return newUser;
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -70,7 +78,7 @@ public class UserService {
             newUser.setPassword("");
             return newUser;
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         } catch (NotFoundException e) {
             throw new PersistenceException(e);
         }
@@ -80,7 +88,7 @@ public class UserService {
         try {
             userDao.deleteUser(userID);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

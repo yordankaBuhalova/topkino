@@ -12,7 +12,6 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -20,22 +19,22 @@ import java.util.List;
 
 @Repository
 public class RoomDao {
-    private final Session dbSession;
-
-    @Autowired
-    public RoomDao() {
-        dbSession = DBDriver.getSessionFactory().openSession();
-    }
 
     public List<Room> getAll() throws DaoException, ConstraintViolationException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
+
         try {
             return dbSession.createQuery("from Room", Room.class).list();
         } catch (Exception e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 
     public List<Room> getAllFiltered(Room room) throws DaoException, ConstraintViolationException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
+
         try {
             CriteriaBuilder cb = dbSession.getCriteriaBuilder();
             CriteriaQuery<Room> cr = cb.createQuery(Room.class);
@@ -62,20 +61,26 @@ public class RoomDao {
 
             return dbSession.createQuery(cr).list();
         } catch (Exception e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 
     public Room getOneById(Long id) throws DaoException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         try {
             // return room
             return dbSession.get(Room.class, id);
         } catch (Exception e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 
     public Room addRoom(Room room) throws DaoException, PersistenceException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             // start a transaction
@@ -94,11 +99,14 @@ public class RoomDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 
     public Room updateRoom(Room room) throws DaoException, PersistenceException  {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         Transaction transaction = null;
         try {
             // start a transaction
@@ -117,12 +125,16 @@ public class RoomDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 
     public void deleteRoom(Long roomID) throws DaoException, EntityNotFoundException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
         Transaction transaction = null;
+
         try {
             // start a transaction
             transaction = dbSession.beginTransaction();
@@ -135,6 +147,7 @@ public class RoomDao {
             } else {
                 throw new EntityNotFoundException("Room with id " + roomID + " not found");
             }
+
             // commit transaction
             transaction.commit();
         } catch (EntityNotFoundException e) {
@@ -143,7 +156,9 @@ public class RoomDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
         }
     }
 }

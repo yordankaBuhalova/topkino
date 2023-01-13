@@ -28,7 +28,7 @@ public class MovieService {
         try {
             return movieDao.getAll();
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -36,7 +36,7 @@ public class MovieService {
         try {
             return movieDao.getAllFiltered(movie);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
     public Movie getOneById(Long id) throws NotFoundException {
@@ -51,7 +51,7 @@ public class MovieService {
         try {
             return movieDao.addMovie(movie);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -60,7 +60,7 @@ public class MovieService {
             movie.setId(movieID);
             return movieDao.updateMovie(movie);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -68,7 +68,7 @@ public class MovieService {
         try {
             movieDao.deleteMovie(movieID);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

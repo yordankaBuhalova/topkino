@@ -21,17 +21,24 @@ public class MovieEndpoint {
     public MovieEndpoint(MovieService movieService) {
         this.movieService = movieService;
     }
+
     @GetMapping
     public List<Movie> getAll() {
         return movieService.getAll();
     }
+
     @GetMapping(value="/filter")
     public List<Movie> getAllFiltered(@RequestParam(required = false) String title, @RequestParam(required = false) String genre, @RequestParam(required = false) Integer releaseYear) {
-        Movie movie = new Movie();
-        movie.setTitle(title);
-        movie.setGenre(genre);
-        movie.setReleaseYear(releaseYear);
-        return movieService.getAllFiltered(movie);
+        try {
+            Movie movie = new Movie();
+            movie.setTitle(title);
+            movie.setGenre(genre);
+            movie.setReleaseYear(releaseYear);
+            return movieService.getAllFiltered(movie);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not process entity");
+        }
     }
 
     @GetMapping(value = "/{id}")

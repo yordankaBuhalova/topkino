@@ -24,7 +24,7 @@ public class ReservationService {
         try {
             return reservationDao.getAll();
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -40,7 +40,7 @@ public class ReservationService {
         try {
             return reservationDao.addReservation(reservation);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -49,7 +49,7 @@ public class ReservationService {
             reservation.setId(reservationID);
             return reservationDao.updateReservation(reservation);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -57,7 +57,7 @@ public class ReservationService {
         try {
             reservationDao.deleteReservation(reservationID);
         } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }
