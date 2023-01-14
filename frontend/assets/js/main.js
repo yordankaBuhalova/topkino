@@ -2,8 +2,8 @@ function register() {
     dataType = "json"
     var $form = $("#registerForm")
 
-    let username = $form.find( "input[id='inputUsername']" ).val()
-    let password =  $form.find( "input[id='inputPassword']" ).val()
+    let username = $form.find( "input[id='inputUsernameReg']" ).val()
+    let password =  $form.find( "input[id='inputPasswordReg']" ).val()
 
     var data = {
         "username": username,
@@ -127,7 +127,7 @@ function loadNavbar() {
                     <li class="nav-item">
                         <a class="nav-link" href="/rooms.html">Rooms</a>
                     </li>
-                    
+
                     ` + usersUrl + `
                     </ul>
 
@@ -179,16 +179,16 @@ function loadNavbar() {
                             <form action="" id="registerForm">
 
                                 <div class="mb-3 row">
-                                    <label for="inputUsername" class="col-md-2 col-form-label">Username</label>
+                                    <label for="inputUsernameReg" class="col-md-2 col-form-label">Username</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" maxlength="30" id="inputUsername">
+                                        <input type="text" class="form-control" maxlength="30" id="inputUsernameReg">
                                     </div>
                                 </div>
 
                                 <div class="mb-3 row">
-                                    <label for="inputPassword" class="col-md-2 col-form-label">Password</label>
+                                    <label for="inputPasswordReg" class="col-md-2 col-form-label">Password</label>
                                     <div class="col-md-10">
-                                        <input type="password" class="form-control" maxlength="30" id="inputPassword">
+                                        <input type="password" class="form-control" maxlength="30" id="inputPasswordReg">
                                     </div>
                                 </div>
 

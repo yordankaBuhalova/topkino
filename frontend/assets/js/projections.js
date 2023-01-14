@@ -150,8 +150,71 @@ function removeModal(modal_id){
     $('.modal-backdrop').remove();
 
 }
+function loadAddBtn(){
 
 
+    if(localStorage.getItem("admin") === 'true') {
+
+        $("#addBtnProjection").append(`
+        <!-- Button trigger modal -->
+
+        <button type="button" class="btn btn-dark mx-3" data-bs-toggle="modal" data-bs-target="#projectionAddModal">
+            Add
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="projectionAddModal" tabindex="-1" aria-labelledby="projectionAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="projectionAddModalLabel">Add projection</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="addProjection">
+                    <div class="mb-3 row">
+                        <label for="inputMovie" class="col-sm-2 col-form-label">Movie</label>
+                        <select class="form-select" id="inputMovie" aria-label="Movie"></select>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="inputRoom" class="col-sm-2 col-form-label">Room</label>
+                        <select class="form-select" id="inputRoom" aria-label="Room"></select>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputDate" class="col-sm-2 col-form-label">Projetion date time</label>
+                        <div class="col-md-10">
+
+                            <label for="meeting-time">Choose a time for your appointment:</label>
+
+                                <input type="datetime-local" id="meeting-time"
+                                    name="meeting-time" value="2023-01-13T19:30"
+                                    min="2018-06-07T00:00" max="2025-06-14T00:00">
+
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputPrice" class="col-sm-2 col-form-label">Price</label>
+                        <div class="col-md-10">
+                            <input type="number" class="form-control"  id="inputPrice">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"onclick="addProjection()">Save changes</button>
+                </div>
+            </div>
+            </div>
+        </div
+
+        `)
+
+    }
+
+}
 
 function renderProjections(data) {
     if(data.length != 0) {

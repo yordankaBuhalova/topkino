@@ -169,7 +169,91 @@ function imageToBase64(file) {
         reader.readAsDataURL(file);
     });
 }
+function loadAddBtn(){
 
+
+    if(localStorage.getItem("admin") === 'true') {
+
+        $("#addMovieBtn").append(`
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#movieAddModal">
+            Add
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="movieAddModal" tabindex="-1" aria-labelledby="movieAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="movieAddModalLabel">Add movie</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="addMovie">
+                        <div class="mb-3 row">
+                            <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
+                            <div class="col-sm-10">
+                                <input type="text"  class="form-control" maxlength="30" id="inputTitle" value="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputImage" class="col-md-2 col-form-label">Image</label>
+                            <div class="col-md-10">
+                                <input type="file" accept="image/*" class="form-control" maxlength="30" id="inputImage">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputGenre" class="col-md-2 col-form-label">Genre</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" maxlength="30" id="inputGenre">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputDuration" class="col-md-2 col-form-label">Duration</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" maxlength="30" id="inputDuration">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputYear" class="col-md-2 col-form-label">Release Year</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" maxlength="4" id="inputYear">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputLang" class="col-md-2 col-form-label">Language</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" maxlength="30" id="inputLang">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputTrailer" class="col-md-2 col-form-label">Trailer Url</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" maxlength="200" id="inputTrailer">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputDescription" class="col-md-2 col-form-label">Description</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" rows="3"  id="inputDescription"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addMovie()">Save changes</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        `)
+
+    }
+
+}
 function renderMovies(data) {
     if(data.length != 0) {
         for (const key in data) {
