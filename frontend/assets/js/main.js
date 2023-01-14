@@ -29,7 +29,98 @@ function loadNavbar() {
                     </li>
                     </ul>
                     <div id="hello_user"></div>
-                    <button class="btn btn-outline-success d-flex" id="" type="button">Login</button>
+
+
+
+
+                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#logInForm">
+                        LogIn
+                    </button>
+                    <div class="modal fade" id="logInForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="logInFormLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="logInFormLabel">Log in</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="logIn">
+
+                                        <div class="mb-3 row">
+
+                                            <label for="inputUsername" class="col-md-2 col-form-label">Username</label>
+
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" maxlength="30" id="inputUsername">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+
+                                            <label for="inputPassword" class="col-md-2 col-form-label">Password</label>
+
+                                            <div class="col-md-10">
+                                                <input type="password" class="form-control" maxlength="30" id="inputPassword">
+                                            </div>
+                                        </div>
+
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Register</button>
+                            <button type="button" class="btn btn-primary">Log in</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                    <div class="modal-dialog ">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Register</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <form action="" id="registerForm">
+
+                            <div class="mb-3 row">
+
+                                <label for="inputUsername" class="col-md-2 col-form-label">Username</label>
+
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" maxlength="30" id="inputUsername">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+
+                                <label for="inputPassword" class="col-md-2 col-form-label">Password</label>
+
+                                <div class="col-md-10">
+                                    <input type="password" class="form-control" maxlength="30" id="inputPassword">
+                                </div>
+                            </div>
+
+                    </form>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-bs-target="#logInForm" data-bs-toggle="modal">Back to log in</button>
+                            <button type="button" class="btn btn-primary">Send</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
                 </div>
             </div>
         </nav>
