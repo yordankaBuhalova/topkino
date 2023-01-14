@@ -24,9 +24,12 @@ function loadNavbar() {
                     <li class="nav-item ">
                         <a class="nav-link" href="/users.html">Users</a>
                     </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/reservations.html">Reservations</a>
+                    </li>
                     </ul>
-
-                    <button class="btn btn-outline-success d-flex" type="submit">Search</button>
+                    <div id="hello_user"></div>
+                    <button class="btn btn-outline-success d-flex" id="" type="button">Login</button>
                 </div>
             </div>
         </nav>

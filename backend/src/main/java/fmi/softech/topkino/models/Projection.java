@@ -24,7 +24,7 @@ public class Projection implements Serializable {
     private Room room;
 
     @Column(name = "price", nullable = false)
-    private Integer price;
+    private Double price;
 
     public Long getId() {
         return id;
@@ -42,7 +42,7 @@ public class Projection implements Serializable {
         return room;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -62,7 +62,7 @@ public class Projection implements Serializable {
         this.room = room;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

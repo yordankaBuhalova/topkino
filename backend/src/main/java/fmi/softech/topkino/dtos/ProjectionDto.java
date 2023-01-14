@@ -8,7 +8,7 @@ public class ProjectionDto {
     private Long movie;
     private Timestamp projectionOn;
     private Long room;
-    private Integer price;
+    private Double price;
 
     public Long getId() {
         return id;
@@ -26,7 +26,7 @@ public class ProjectionDto {
         return room;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -46,7 +46,7 @@ public class ProjectionDto {
         this.room = room;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
