@@ -8,9 +8,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -25,23 +26,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        BasicAuthenticationEntryPoint authenticationEntryPoint = new BasicAuthenticationEntryPoint();
-        authenticationEntryPoint.setRealmName("topkino");
-        http.authorizeHttpRequests()
+        http
+            .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/authorized").permitAll()
                 .requestMatchers(HttpMethod.GET, "/movies", "/rooms", "/projections").permitAll()
                 .requestMatchers(HttpMethod.GET, "/movies/**", "/rooms/**", "/projections/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/users/**").authenticated()
                 .requestMatchers(HttpMethod.POST, "/movies", "/rooms", "/projections").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/movies/**", "/rooms/**", "/projections/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/movies/**", "/rooms/**", "/projections/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
-                .and()
-                .httpBasic()
-                .authenticationEntryPoint(authenticationEntryPoint);
+            .and()
+                .cors()
+            .and()
+                .csrf()
+                .disable()
+            .httpBasic();
         return http.build();
     }
 }

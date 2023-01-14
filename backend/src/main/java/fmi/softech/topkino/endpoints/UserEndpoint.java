@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -33,7 +35,14 @@ public class UserEndpoint {
         user.setAdmin(admin);
         return userService.getAllFiltered(user);
     }
-    
+
+    @PostMapping(value="/authorized")
+    public Map<String, Boolean> isAuthorized(@RequestBody User user) {
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("authorized", userService.getExactUser(user) != null);
+        return response;
+    }
+
     @GetMapping(value = "/{id}")
     public User getOneById(@PathVariable("id") Long id) {
         try {

@@ -60,7 +60,37 @@ public class UserDao {
             dbSession.close();
         }
     }
-    
+
+    public User getExactUser(User user) throws DaoException, ConstraintViolationException {
+        Session dbSession = DBDriver.getSessionFactory().openSession();
+        try {
+            CriteriaBuilder cb = dbSession.getCriteriaBuilder();
+            CriteriaQuery<User> cr = cb.createQuery(User.class);
+            Root<User> root = cr.from(User.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            if(user.getUsername() != null) {
+                predicates.add(cb.equal(root.get("username"), user.getUsername()));
+            }
+
+            if(user.getPassword() != null) {
+                predicates.add(cb.equal(root.get("password"), user.getPassword()));
+            }
+
+            Predicate[] predicatesArray = new Predicate[predicates.size()];
+            predicates.toArray(predicatesArray);
+
+            cr.select(root).where(predicatesArray);
+
+            return dbSession.createQuery(cr).uniqueResult();
+        } catch (Exception e) {
+            throw new DaoException(e);
+        } finally {
+            dbSession.close();
+        }
+    }
+
     public User getOneById(Long id) throws DaoException {
         Session dbSession = DBDriver.getSessionFactory().openSession();
         try {

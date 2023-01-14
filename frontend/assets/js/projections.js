@@ -33,6 +33,7 @@ function addProjection() {
         data: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
+            "Authorization": baseAuthHeader()
         },
         error: function() {
             alert("Could not create projection")
@@ -66,6 +67,7 @@ function editProjection(id) {
         data: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
+            "Authorization": baseAuthHeader()
         },
         error: function() {
             alert("Could not edit projection")
@@ -83,6 +85,9 @@ function removeProjection(id) {
     $.ajax({
         url: Config().API_URL + '/projections/'+ id,
         type: "DELETE",
+        headers: {
+            "Authorization": baseAuthHeader()
+        },
         error: function() {
             alert("Could not delete projection")
         },

@@ -42,7 +42,17 @@ public class UserService {
             throw new RuntimeException(e);
         }
     }
-    
+
+    public User getExactUser(User user) {
+        try {
+            String hashedPass = DigestUtils.sha256Hex(user.getPassword());
+            user.setPassword(hashedPass);
+            return userDao.getExactUser(user);
+        } catch (DaoException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public User getOneById(Long id) throws NotFoundException {
         try {
             User user = userDao.getOneById(id);

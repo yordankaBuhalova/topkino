@@ -53,13 +53,16 @@ function addRoom() {
         "seats": $form.find( "input[id='inputSeats']" ).val(),
         "type": $form.find( "select[id='roomTypeAdd']" ).val()
     }
+
     console.log(data)
+    console.log(headers)
     $.ajax({
         url: Config().API_URL + '/rooms',
         type: "POST",
         data: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
+            "Authorization": baseAuthHeader()
         },
         error: function() {
             alert("Could not create room")
@@ -81,7 +84,6 @@ function removeModal(modal_id){
 
 }
 
-
 function editRoom(id) {
     dataType = "json"
     var $form = $("#editRoom"+ id)
@@ -99,6 +101,7 @@ function editRoom(id) {
         data: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
+            "Authorization": baseAuthHeader()
         },
         error: function() {
             alert("Could not edit room")
@@ -111,10 +114,14 @@ function editRoom(id) {
         dataType: dataType
     })
 }
+
 function removeRoom(id) {
     $.ajax({
         url: Config().API_URL + '/rooms/'+ id,
         type: "DELETE",
+        headers: {
+            "Authorization": baseAuthHeader()
+        },
         error: function() {
             alert("Could not delete room")
         },

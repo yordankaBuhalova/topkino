@@ -80,6 +80,7 @@ async function addMovie() {
         data: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
+            "Authorization": baseAuthHeader()
         },
         error: function() {
             alert("Could not create movie")
@@ -125,6 +126,7 @@ async function editMovie(id) {
         data: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
+            "Authorization": baseAuthHeader()
         },
         error: function() {
             alert("Could not edit movie")
@@ -142,6 +144,9 @@ function removeMovie(id) {
     $.ajax({
         url: Config().API_URL + '/movies/'+ id,
         type: "DELETE",
+        headers: {
+            "Authorization": baseAuthHeader()
+        },
         error: function() {
             alert("Could not delete movie")
         },
@@ -238,7 +243,7 @@ function renderMovies(data) {
                                             <div class="mb-3 row">
                                                 <label for="inputGenre`+movie.id+`" class="col-md-2 col-form-label">Genre</label>
                                                 <div class="col-md-10">
-                                                    <input  value="`+ movie.genre +`" type="text" class="form-control" maxlength="30" id="inputGenre`+movie.id+`">
+                                                    <input  value="`+ movie.genre +`" type="text" class="form-control" maxlength="30" pattern="^[A-Za-z \s*]+$]" id="inputGenre`+movie.id+`">
                                                 </div>
                                             </div>
 
@@ -258,13 +263,13 @@ function renderMovies(data) {
                                             <div class="mb-3 row">
                                                 <label for="inputLang`+movie.id+`" class="col-md-2 col-form-label">Language</label>
                                                 <div class="col-md-10">
-                                                    <input  value="`+ movie.language +`" type="text" class="form-control" maxlength="30" id="inputLang`+movie.id+`">
+                                                    <input  value="`+ movie.language +`" type="text" class="form-control" pattern="^[A-Za-z \s*]+$]" maxlength="30" id="inputLang`+movie.id+`">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="inputTrailer`+movie.id+`" class="col-md-2 col-form-label">Trailer Url</label>
                                                 <div class="col-md-10">
-                                                    <input  value="`+ movie.trailerUrl +`" type="text" class="form-control" maxlength="200" id="inputTrailer`+movie.id+`">
+                                                    <input  value="`+ movie.trailerUrl +`" type="text" pattern="https?://.+" class="form-control" maxlength="200" id="inputTrailer`+movie.id+`">
                                                 </div>
                                             </div>
 

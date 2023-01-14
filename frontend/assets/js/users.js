@@ -2,6 +2,9 @@ function getAllUsers() {
     cleanUserList()
     $.ajax({
         url: Config().API_URL + '/users',
+        headers: {
+            "Authorization": baseAuthHeader()
+        },
         error: function() {
             $("#users-list").append(`
                 <div class="alert alert-warning" role="alert">
@@ -30,6 +33,9 @@ function getFilteredUsers() {
     cleanUserList()
     $.ajax({
         url: Config().API_URL + '/users/filter',
+        headers: {
+            "Authorization": baseAuthHeader()
+        },
         data: filters,
         error: function() {
             $("#users-list").append(`
@@ -56,7 +62,7 @@ function addUser() {
         "password": $form.find( "input[id='inputPassword']" ).val(),
         "admin": is_admin
     }
-    console.log(data)
+
     $.ajax({
         url: Config().API_URL + '/users',
         type: "POST",
@@ -98,6 +104,7 @@ function editUser(id) {
         data: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
+            "Authorization": baseAuthHeader()
         },
         error: function() {
             alert("Could not edit user")
@@ -121,6 +128,10 @@ function removeUser(id) {
     $.ajax({
         url: Config().API_URL + '/users/'+ id,
         type: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": baseAuthHeader()
+        },
         error: function() {
             alert("Could not delete user")
         },
