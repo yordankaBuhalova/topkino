@@ -54,8 +54,6 @@ function addRoom() {
         "type": $form.find( "select[id='roomTypeAdd']" ).val()
     }
 
-    console.log(data)
-    console.log(headers)
     $.ajax({
         url: Config().API_URL + '/rooms',
         type: "POST",
@@ -145,6 +143,60 @@ function renderRooms(data) {
             }else{
                 roomSelected3d= "checked"
             }
+            editRoomModalForm=""
+            if(localStorage.getItem("admin") === 'true') {
+                editRoomModalForm = `
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#roomEditModal` + room.id + `">
+                    Edit
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="roomEditModal` + room.id + `" tabindex="-1" aria-labelledby="roomEditModalLabel` + room.id + `" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="roomEditModalLabel` + room.id + `">Add room</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="editRoom`+room.id+`">
+                                    <div class="mb-3 row">
+                                        <label for="roomName` + room.id + `" class="col-sm-2 col-form-label">Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text"  class="form-control" id="roomName` + room.id + `" value="` + room.name + `">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <label for="inputSeats` + room.id + `" class="col-sm-2 col-form-label">Seats</label>
+                                        <div class="col-md-10">
+                                            <input value="` + room.seats + `" type="number" class="form-control" min="10" max="3"  id="inputSeats` + room.id + `">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 ml-2 row">
+
+                                        <label for="roomTypeAdd` + room.id + `" class="col-sm-2 col-form-label">Room type</label>
+                                        <div class="col-md-10">
+                                            <select class="form-select" id="roomTypeAdd` + room.id + `" aria-label="Room Type">
+                                                <option value="R_2D" `+ roomSelected2d +` >2D</option>
+                                                <option value="R_3D" `+ roomSelected3d +` >3D</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="editRoom(`+room.id+`)">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="removeRoom(` + room.id + `)">Delete</button>
+
+                `
+            }
 
             $("#room-list").append(`
                 <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -152,54 +204,8 @@ function renderRooms(data) {
                         <p class="fw-bold">` + room.name + `</p>
                         <p>Seats: `+ room.seats + `</p>
                         <p>Room type: ` + room.type + `</p>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#roomEditModal` + room.id + `">
-                            Edit
-                        </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="roomEditModal` + room.id + `" tabindex="-1" aria-labelledby="roomEditModalLabel` + room.id + `" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="roomEditModalLabel` + room.id + `">Add room</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="" id="editRoom`+room.id+`">
-                                            <div class="mb-3 row">
-                                                <label for="roomName` + room.id + `" class="col-sm-2 col-form-label">Name</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text"  class="form-control" id="roomName` + room.id + `" value="` + room.name + `">
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3 row">
-                                                <label for="inputSeats` + room.id + `" class="col-sm-2 col-form-label">Seats</label>
-                                                <div class="col-md-10">
-                                                    <input value="` + room.seats + `" type="number" class="form-control" min="10" max="3"  id="inputSeats` + room.id + `">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 ml-2 row">
-
-                                                <label for="roomTypeAdd` + room.id + `" class="col-sm-2 col-form-label">Room type</label>
-                                                <div class="col-md-10">
-                                                    <select class="form-select" id="roomTypeAdd` + room.id + `" aria-label="Room Type">
-                                                        <option value="R_2D" `+ roomSelected2d +` >2D</option>
-                                                        <option value="R_3D" `+ roomSelected3d +` >3D</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="editRoom(`+room.id+`)">Save changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-danger" onclick="removeRoom(` + room.id + `)">Delete</button>
+                        ` + editRoomModalForm + `
                     </div>
                 </li>
             `)

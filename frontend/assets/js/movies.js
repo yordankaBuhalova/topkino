@@ -171,10 +171,91 @@ function imageToBase64(file) {
 }
 
 function renderMovies(data) {
-
     if(data.length != 0) {
         for (const key in data) {
             let movie = data[key]
+
+            adminInterface = ""
+            if(localStorage.getItem("admin") === 'true') {
+                adminInterface = `
+                    <!-- Modal -->
+                    <div class="modal fade" id="movieEditModal`+ movie.id +`" tabindex="-1" aria-labelledby="movieEditModal`+ movie.id +`Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="movieEditModal`+ movie.id +`Label">Edit movie</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="editMovie`+movie.id+`">
+                                    <div class="mb-3 row">
+                                        <label for="inputTitle`+movie.id+`" class="col-sm-2 col-form-label">Title</label>
+                                        <div class="col-sm-10">
+                                            <input  value="`+movie.title+`" type="text"  class="form-control" maxlength="30" id="inputTitle`+movie.id+`" value="">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="inputImage`+movie.id+`" class="col-md-2 col-form-label">Image</label>
+                                        <div class="col-md-10">
+                                            <input value="`+movie.img+`" type="file" accept="image/*" class="form-control" maxlength="30" id="inputImage`+movie.id+`">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="inputGenre`+movie.id+`" class="col-md-2 col-form-label">Genre</label>
+                                        <div class="col-md-10">
+                                            <input  value="`+ movie.genre +`" type="text" class="form-control" maxlength="30" id="inputGenre`+movie.id+`">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <label for="inputDuration`+movie.id+`" class="col-md-2 col-form-label">Duration</label>
+                                        <div class="col-md-10">
+                                            <input  value="`+ movie.duration +`" type="text" class="form-control" maxlength="30" id="inputDuration`+movie.id+`">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="inputYear`+movie.id+`" class="col-md-2 col-form-label">Release Year</label>
+                                        <div class="col-md-10">
+                                            <input  value="`+ movie.releaseYear +`" type="text" class="form-control" maxlength="4" id="inputYear`+movie.id+`">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 row">
+                                        <label for="inputLang`+movie.id+`" class="col-md-2 col-form-label">Language</label>
+                                        <div class="col-md-10">
+                                            <input  value="`+ movie.language +`" type="text" class="form-control" maxlength="30" id="inputLang`+movie.id+`">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="inputTrailer`+movie.id+`" class="col-md-2 col-form-label">Trailer Url</label>
+                                        <div class="col-md-10">
+                                            <input  value="`+ movie.trailerUrl +`" type="text" pattern="https?://.+" class="form-control" maxlength="200" id="inputTrailer`+movie.id+`">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mb-3 row">
+                                        <label for="inputDescription`+movie.id+`" class="col-md-2 col-form-label">Description</label>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" rows="3"  id="inputDescription`+movie.id+`">`+ movie.description+`</textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="editMovie(` + movie.id + `)">Save changes</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#movieEditModal`+ movie.id +`">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="removeMovie(` + movie.id + `)">Delete</button>
+                `
+            }
+
             $("#movie-list").append(`
                 <li class="list-group-item d-flex justify-content-between align-items-start  mb-1">
                     <div class="col-ms-2">
@@ -212,84 +293,7 @@ function renderMovies(data) {
                         <div class="card-footer ">
 
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#movieEditModal`+ movie.id +`">
-                                Edit
-                            </button>
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="movieEditModal`+ movie.id +`" tabindex="-1" aria-labelledby="movieEditModal`+ movie.id +`Label" aria-hidden="true">
-                                <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="movieEditModal`+ movie.id +`Label">Edit movie</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="" id="editMovie`+movie.id+`">
-                                            <div class="mb-3 row">
-                                                <label for="inputTitle`+movie.id+`" class="col-sm-2 col-form-label">Title</label>
-                                                <div class="col-sm-10">
-                                                    <input  value="`+movie.title+`" type="text"  class="form-control" maxlength="30" id="inputTitle`+movie.id+`" value="">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="inputImage`+movie.id+`" class="col-md-2 col-form-label">Image</label>
-                                                <div class="col-md-10">
-                                                    <input  value="`+movie.img+`" type="file" accept="image/*" class="form-control" maxlength="30" id="inputImage`+movie.id+`">
-
-
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="inputGenre`+movie.id+`" class="col-md-2 col-form-label">Genre</label>
-                                                <div class="col-md-10">
-                                                    <input  value="`+ movie.genre +`" type="text" class="form-control" maxlength="30" pattern="^[A-Za-z \s*]+$]" id="inputGenre`+movie.id+`">
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3 row">
-                                                <label for="inputDuration`+movie.id+`" class="col-md-2 col-form-label">Duration</label>
-                                                <div class="col-md-10">
-                                                    <input  value="`+ movie.duration +`" type="text" class="form-control" maxlength="30" id="inputDuration`+movie.id+`">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="inputYear`+movie.id+`" class="col-md-2 col-form-label">Release Year</label>
-                                                <div class="col-md-10">
-                                                    <input  value="`+ movie.releaseYear +`" type="text" class="form-control" maxlength="4" id="inputYear`+movie.id+`">
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3 row">
-                                                <label for="inputLang`+movie.id+`" class="col-md-2 col-form-label">Language</label>
-                                                <div class="col-md-10">
-                                                    <input  value="`+ movie.language +`" type="text" class="form-control" pattern="^[A-Za-z \s*]+$]" maxlength="30" id="inputLang`+movie.id+`">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="inputTrailer`+movie.id+`" class="col-md-2 col-form-label">Trailer Url</label>
-                                                <div class="col-md-10">
-                                                    <input  value="`+ movie.trailerUrl +`" type="text" pattern="https?://.+" class="form-control" maxlength="200" id="inputTrailer`+movie.id+`">
-                                                </div>
-                                            </div>
-
-
-                                            <div class="mb-3 row">
-                                                <label for="inputDescription`+movie.id+`" class="col-md-2 col-form-label">Description</label>
-                                                <div class="col-md-10">
-                                                    <textarea class="form-control" rows="3"  id="inputDescription`+movie.id+`">`+ movie.description+`</textarea>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer ">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="editMovie(` + movie.id + `)">Save changes</button>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-danger" onclick="removeMovie(` + movie.id + `)">Delete</button>
+                            ` + adminInterface + `
                         </div>
                     </div>
                 </li>

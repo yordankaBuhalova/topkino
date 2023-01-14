@@ -22,7 +22,8 @@ function register() {
         },
         success: function(data, status) {
             alert("Registered successfully")
-            saveLoginDetails(username, password)
+            saveLoginDetails(username, password, false)
+            localtion.reload()
         },
         dataType: dataType
     })
@@ -52,11 +53,7 @@ function login() {
         },
         success: function(data, status) {
             if(data.authorized) {
-                saveLoginDetails(username, password)
-                alert("Login successful")
-                // $("#loginFormModal").hide()
-                // $("#helloUser").append()
-                // $('.modal-backdrop').remove();
+                saveLoginDetails(username, password, data.isAdmin)
                 location.reload()
             } else {
                 alert("Login incorrect")
@@ -71,9 +68,10 @@ function logout() {
     location.reload()
 }
 
-function saveLoginDetails(username, password) {
+function saveLoginDetails(username, password, isAdmin) {
     localStorage.setItem("username", username)
     localStorage.setItem("password", password)
+    localStorage.setItem("admin", isAdmin)
 }
 
 function baseAuthHeader() {
@@ -89,6 +87,8 @@ function loadNavbar() {
         </button>
     `
 
+    usersUrl = ""
+
     if(localStorage.getItem("username") != undefined) {
         greeting = `
             <div id="helloUser" class="mx-3">
@@ -97,6 +97,14 @@ function loadNavbar() {
             <button type="button" class="btn btn-outline-danger" onclick="logout()">
                 Log out
             </button>
+        `
+    }
+
+    if(localStorage.getItem("admin") === 'true') {
+        usersUrl = `
+            <li class="nav-item ">
+                <a class="nav-link" href="/users.html">Users</a>
+            </li>
         `
     }
 
@@ -119,15 +127,8 @@ function loadNavbar() {
                     <li class="nav-item">
                         <a class="nav-link" href="/rooms.html">Rooms</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About us</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="/users.html">Users</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="/reservations.html">Reservations</a>
-                    </li>
+                    
+                    ` + usersUrl + `
                     </ul>
 
                     ` + greeting + `

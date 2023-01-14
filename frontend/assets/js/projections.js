@@ -151,6 +151,8 @@ function removeModal(modal_id){
 
 }
 
+
+
 function renderProjections(data) {
     if(data.length != 0) {
         for (const key in data) {
@@ -174,20 +176,11 @@ function renderProjections(data) {
                 },
                 async: false
             })
+            editProjectionModalForms = ""
 
-            $("#projection-list").append(`
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="col-ms-2">
-                        <img src=" ` + movieImage + `" class="img-thumbnail rounded-start" alt="...">
-                    </div>
-                    <div class="ms-2 me-auto">
-                        <p class="fw-bold">` + movieName + `</p>
-                        <p>Room: `+ roomName + `</p>
-                        <p>Time: `+ new Date(projection.projectionOn).toLocaleString() + `</p>
-                        <p>price: ` + projection.price + ` lv. </p>
-
-
-                        <!-- Button trigger modal -->
+            if(localStorage.getItem("admin") === 'true') {
+                editProjectionModalForms = `
+                <!-- Button trigger modal -->
                 <button type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#projectionEditModal`+projection.id+`">
                     Edit
                 </button>
@@ -247,7 +240,30 @@ function renderProjections(data) {
 
                         <button type="button" class="btn btn-danger" onclick="removeProjection(` + projection.id + `)">Delete</button>
                     </div>
+
+                `
+            }
+            orderBtn=""
+            if(localStorage.getItem("username") != undefined) {
+                orderBtn = `
                     <button type="button" class="btn btn-primary">Make reservation</button>
+                `
+            }
+
+            $("#projection-list").append(`
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="col-ms-2">
+                        <img src=" ` + movieImage + `" class="img-thumbnail rounded-start" alt="...">
+                    </div>
+                    <div class="ms-2 me-auto">
+                        <p class="fw-bold">` + movieName + `</p>
+                        <p>Room: `+ roomName + `</p>
+                        <p>Time: `+ new Date(projection.projectionOn).toLocaleString() + `</p>
+                        <p>price: ` + projection.price + ` lv. </p>
+
+                        `+editProjectionModalForms + orderBtn +`
+
+
                 </li>
             `)
             loadRooms("inputRoom"+ projection.id, projection.room)

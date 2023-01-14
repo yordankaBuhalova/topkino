@@ -39,7 +39,14 @@ public class UserEndpoint {
     @PostMapping(value="/authorized")
     public Map<String, Boolean> isAuthorized(@RequestBody User user) {
         Map<String, Boolean> response = new HashMap<>();
-        response.put("authorized", userService.getExactUser(user) != null);
+
+        User foundUser =  userService.getExactUser(user);
+        response.put("authorized", foundUser != null);
+
+        if (foundUser != null) {
+            response.put("isAdmin", foundUser.getAdmin());
+        }
+
         return response;
     }
 
