@@ -1,13 +1,21 @@
 :root{
     --background:    #fff;
     --black: 343a40;
+    --back:
+    #F5F5F5
+    ;
+    --backcol: rgb(247, 242, 236);
 
 }
 
 .body {
-    background-color: rgb(247, 242, 236);
+    background-color: var(--back);
+
 }
 
 .space-style{
     margin-left: 0.8em;
+}
+.nav-style{
+   background-color: #EFEBE9;
 }

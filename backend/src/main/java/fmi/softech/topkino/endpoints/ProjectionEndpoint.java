@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -42,7 +42,23 @@ public class ProjectionEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Projection not found");
         }
     }
-
+    @GetMapping(value="/filter")
+    public List<ProjectionDto> getAllFiltered(@RequestParam(required = false) Long movie, @RequestParam(required = false) String projectionOn) {
+        try {
+            ProjectionDto projectionDto = new ProjectionDto();
+            if(movie != null) {
+                projectionDto.setMovie(movie);
+            }
+            if(projectionOn!= null) {
+                projectionDto.setProjectionOn(Timestamp.valueOf(projectionOn));
+            }
+            Projection projection = projectionMapper.dtoToEntity(projectionDto);
+            return projectionMapper.entityListToDtoList(projectionService.getAllFiltered(projection));
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not process entity");
+        }
+    }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectionDto addProjection(@RequestBody ProjectionDto projection) {

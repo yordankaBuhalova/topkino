@@ -15,13 +15,13 @@
 <body class="body">
     <div id="navigation"></div>
 
-    <div class="container-fluid">
+    <div class="container">
 		<div class="row">
 			<div class="col-md-1">
 				<h2>Movies</h2>
 			</div>
 
-			<div class="col" id="addMovieBtn">
+			<div class="col mx-3" id="addMovieBtn">
 
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 			<h2> Filters</h2>
             <form>
 				<div class="row">
-				<div class="mb-3 col-md-2">
+				<div class="mb-3 col-md-6">
 					<label for="movieTitleFilter" class="form-label">Title</label>
 					<input type="text" class="form-control"  id="movieTitleFilter" aria-label="Title" placeholder="Title...">
 				</div>
@@ -41,7 +41,7 @@
 					<input type="text" class="form-control"  id="movieGenreFilter" aria-label="Genre" placeholder="Genre...">
 				</div>
 				<div class="mb-3 col-md-2">
-					<label for="movieYearFilter" class="form-label">Release year</label>
+					<label for="movieYearFilter" class="form-label" >Release year </label>
 					<input type="text" class="form-control"  id="movieYearFilter" aria-label="Release" maxlength="4" placeholder="Year..">
 				</div></div>
                 <button class="btn btn-primary" type="button" onclick="getFilteredMovies()"> Filter</button>

@@ -2,6 +2,7 @@ package fmi.softech.topkino.services;
 
 import fmi.softech.topkino.exceptions.DaoException;
 import fmi.softech.topkino.exceptions.NotFoundException;
+import fmi.softech.topkino.models.Movie;
 import fmi.softech.topkino.models.Projection;
 import fmi.softech.topkino.persistence.ProjectionDao;
 import jakarta.persistence.EntityNotFoundException;
@@ -35,7 +36,13 @@ public class ProjectionService {
             throw new NotFoundException(e.getMessage());
         }
     }
-
+    public List<Projection> getAllFiltered(Projection projection) {
+        try {
+            return projectionDao.getAllFiltered(projection);
+        } catch (DaoException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public Projection addProjection(Projection projection) throws PersistenceException {
         try {
             return projectionDao.addProjection(projection);

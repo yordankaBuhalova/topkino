@@ -113,6 +113,7 @@ function loadMovies(listID, selectedMovie) {
                 if(selectedMovie == movie.id) {
                     selected = "selected"
                 }
+
                 $("#"+listID).append(`
                     <option value="` + movie.id + `" ` + selected + `>` + movie.title + `</option>
                 `)
@@ -136,9 +137,11 @@ function loadRooms(listID, selectedRoom) {
                 if(selectedRoom == room.id) {
                     selected = "selected"
                 }
+
                 $("#"+listID).append(`
                     <option value="` + room.id + `" ` + selected + `>` + room.name + `</option>
                 `)
+
             }
         }
     })
@@ -150,6 +153,7 @@ function removeModal(modal_id){
     $('.modal-backdrop').remove();
 
 }
+
 function loadAddBtn(){
 
 
@@ -170,35 +174,34 @@ function loadAddBtn(){
                 <h1 class="modal-title fs-5" id="projectionAddModalLabel">Add projection</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body mx-3">
                     <form action="" id="addProjection">
-                    <div class="mb-3 row">
-                        <label for="inputMovie" class="col-sm-2 col-form-label">Movie</label>
-                        <select class="form-select" id="inputMovie" aria-label="Movie"></select>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="inputRoom" class="col-sm-2 col-form-label">Room</label>
-                        <select class="form-select" id="inputRoom" aria-label="Room"></select>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="inputDate" class="col-sm-2 col-form-label">Projetion date time</label>
-                        <div class="col-md-10">
-
-                            <label for="meeting-time">Choose a time for your appointment:</label>
-
-                                <input type="datetime-local" id="meeting-time"
-                                    name="meeting-time" value="2023-01-13T19:30"
-                                    min="2018-06-07T00:00" max="2025-06-14T00:00">
-
+                        <div class="mb-3 row">
+                            <label for="inputMovie" class="col-sm-2 col-form-label">Movie:</label>
+                            <select class="form-select" id="inputMovie" aria-label="Movie"></select>
                         </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="inputPrice" class="col-sm-2 col-form-label">Price</label>
-                        <div class="col-md-10">
-                            <input type="number" class="form-control"  id="inputPrice">
+
+                        <div class="mb-3 row">
+                            <label for="inputRoom" class="col-sm-2 col-form-label">Room:</label>
+                            <select class="form-select" id="inputRoom" aria-label="Room"></select>
                         </div>
-                    </div>
+                        <div class="mb-3 row">
+                            <div class="col-md-12">
+
+                                <label for="meeting-time" class="col-form-label">Choose a time for your projection:</label>
+
+                                    <input type="datetime-local" id="meeting-time" class="form-control"
+                                        name="meeting-time" value=""
+                                        min="2018-06-07T00:00" max="2025-06-14T00:00">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            
+                            <div class="col-md-12">
+                                <label for="inputPrice" class="col-sm-2 col-form-label">Price:</label>
+                                <input type="number" class="form-control"  id="inputPrice">
+                            </div>
+                        </div>
                     </form>
                 </div>
 
@@ -214,6 +217,45 @@ function loadAddBtn(){
 
     }
 
+}
+
+function getFilteredProjections() {
+    cleanProjectionList()
+    let movie = $("#movieTitleFilter").val()
+    let dateFilter = $("#dateFilter").val()
+
+    filters = {
+    }
+
+    if(movie != "") {
+        filters.movie = parseInt(movie)
+    }
+    // if(genre != "") {
+    //     filters.genre = genre
+    // }
+    if (dateFilter != "") {
+        filters.projectionOn = new Date(dateFilter).toISOString().slice(0,10) + " 00:00:00"
+    }
+    if(Object.keys(filters).length == 0) {
+        getAllProjections()
+        return
+    }
+
+    cleanProjectionList()
+    $.ajax({
+        url: Config().API_URL + '/projections/filter',
+        data: filters,
+        error: function() {
+            $("#movies-list").append(`
+                <div class="alert alert-warning" role="alert">
+                    Could not load users, please try again later!
+                </div>
+            `)
+        },
+        success: function(data, status) {
+            renderProjections(data)
+        }
+    })
 }
 
 function renderProjections(data) {
@@ -256,37 +298,40 @@ function renderProjections(data) {
                         <h1 class="modal-title fs-5" id="projectionEditModalLabel`+projection.id+`">Edit projection</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body mx-3">
                             <form action="" id="editProjection`+ projection.id+`">
-                            <div class="mb-3 row">
-                                <label for="inputMovie`+ projection.id +`" class="col-sm-2 col-form-label">Movie</label>
-                                <div class="col-sm-10">
+                            <div class="mb-3  row">
+                                
+                                <div class="col-sm-12">
+                                <label for="inputMovie`+ projection.id +`" class="col-sm-2 col-form-label">Movie:</label>
                                 <select class="form-select" id="inputMovie`+ projection.id +`" aria-label="Movie">
                                 </select>
                                 </div>
                             </div>
 
-                            <div class="mb-3 row">
-                                <label for="inputRoom`+ projection.id +`" class="col-sm-2 col-form-label">Room</label>
-                                <div class="col-sm-10">
+                            <div class="mb-3  row">
+                                
+                                <div class="col-sm-12">
+                                <label for="inputRoom`+ projection.id +`" class="col-sm-2 col-form-label">Room:</label>
                                 <select class="form-select" id="inputRoom`+ projection.id +`" aria-label="Room"></select>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="inputDate" class="col-sm-2 col-form-label">Projetion date time</label>
-                                <div class="col-md-10">
+                                
+                                <div class="col-md-12">
 
-                                    <label for="meeting-time`+projection.id+`">Choose a time for your projection:</label>
+                                    <label for="meeting-time`+projection.id+`" class=" col-form-label">Choose a time for your projection:</label>
 
-                                        <input type="datetime-local" id="meeting-time`+ projection.id +`"
+                                        <input type="datetime-local" id="meeting-time`+ projection.id +`" class="form-control"
                                             name="meeting-time`+projection.id+`" value="`+ new Date(projection.projectionOn).toISOString().slice(0, -1)+`"
                                             min="2018-06-07T00:00" max="2025-06-14T00:00">
 
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="inputPrice`+projection.id+`" class="col-sm-2 col-form-label">Price</label>
-                                <div class="col-md-10">
+                                
+                                <div class="col-md-12">
+                                    <label for="inputPrice`+projection.id+`" class="col-sm-2 col-form-label">Price:</label>
                                     <input type="number" class="form-control"  id="inputPrice`+projection.id+`" value="`+projection.price+`">
                                 </div>
                             </div>
@@ -309,7 +354,31 @@ function renderProjections(data) {
             orderBtn=""
             if(localStorage.getItem("username") != undefined) {
                 orderBtn = `
-                    <button type="button" class="btn btn-primary">Make reservation</button>
+
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reservationModal">
+                    Make reservation
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="reservationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="reservationModalLabel">Make reservation</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            ...
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Send</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 `
             }
 

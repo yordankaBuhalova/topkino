@@ -39,8 +39,14 @@ public class ProjectionMapper {
 
         try {
             if(projectionDto != null) {
-                Room room = roomService.getOneById(projectionDto.getRoom());
-                Movie movie = movieService.getOneById(projectionDto.getMovie());
+                Room room = null;
+                Movie movie = null;
+                if(projectionDto.getRoom() != null) {
+                    room = roomService.getOneById(projectionDto.getRoom());
+                }
+                if (projectionDto.getMovie() != null) {
+                     movie = movieService.getOneById(projectionDto.getMovie());
+                }
 
                 projection.setId(projectionDto.getId());
                 projection.setMovie(movie);
@@ -49,7 +55,9 @@ public class ProjectionMapper {
                 projection.setProjectionOn(projectionDto.getProjectionOn());
             }
 
-        } catch(NotFoundException e) {}
+        } catch(NotFoundException e) {
+            System.err.println(e.getMessage());
+        }
 
         return projection;
     }

@@ -17,23 +17,42 @@
 <body class="body" >
     <div id="navigation"></div>
 
-    <div class="container-fluid">
-
-
+    <div class="container">
         <div class="row">
 			<div class="col-md-1 ">
 				<h2>Projections</h2>
 			</div>
-
-			<div class="col  " id="addBtnProjection">
-
-
+			<div class="col  mx-5" id="addBtnProjection">
         </div>
+        <div class="card">
+            <div class="card-body">
+            <form action="" id="projectionFilter">
+                <h2> Filters</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="movieTitleFilter" class="form-label">Movie</label>
+                        <select id="movieTitleFilter" class="form-select" aria-label="movieTitleFilter">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="dateFilter" class="form-label">Date</label>
+                        
 
+                                <input type="date" id="dateFilter" class="form-control"
+                                    name="meeting-time" value=""
+                                    min="2018-06-07" max="2025-06-14">
+                        
 
-
+                        </select>
+                    </div>
+                </div>
+            <button class="btn btn-primary mt-2" type="button" onclick="getFilteredProjections()"> Filter</button>
+            </form>
+            </div>
+          </div>
+        
         <ol id="projection-list" class="list-group"></ol>
-
     </div>
 
 <!-- Latest compiled JavaScript -->
@@ -47,6 +66,7 @@
         loadAddBtn()
         loadMovies("inputMovie", null)
         loadRooms("inputRoom", null)
+        loadMovies("movieTitleFilter", null)
         getAllProjections()
     }
 </script>

@@ -72,7 +72,7 @@ async function addMovie() {
 
     }
 
-    console.log(data)
+    
 
     $.ajax({
         url: Config().API_URL + '/movies',
@@ -243,7 +243,7 @@ function loadAddBtn(){
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addMovie()">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="addMovie()">Save</button>
                 </div>
             </div>
             </div>
@@ -341,9 +341,9 @@ function renderMovies(data) {
             }
 
             $("#movie-list").append(`
-                <li class="list-group-item d-flex justify-content-between align-items-start  mb-1">
+                <li class="list-group-item d-flex justify-content-between align-items-start  mb-1"  >
                     <div class="col-ms-2">
-                        <img src=" ` + movie.img + `" class="img-thumbnail rounded-start" alt="...">
+                        <img src=" ` + movie.img + `" class="img-thumbnail rounded-start"alt="...">
                     </div>
                     <div class="ms-2 me-auto">
                         <div class="fw-bold">` + movie.title + `</div>
